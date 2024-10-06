@@ -2,6 +2,7 @@
 #include <iomanip>
 
 using namespace std;
+//Вариант 3
 
 int main()
 {
