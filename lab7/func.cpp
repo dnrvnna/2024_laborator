@@ -1,10 +1,8 @@
 #include <iostream>
-#include <iomanip>
-#include "func.hpp"
 
 using namespace std;
 
-int ** create_and_fill_array(int& n)
+int ** Create_and_Read(int n)
 {
     int ** A = new int * [n];
     
@@ -18,22 +16,24 @@ int ** create_and_fill_array(int& n)
     
     return A;
 }
-
-void delete_array(int ** A, int& n)
+void Delete(int ** A, int n)
 {
     for(int i = 0; i < n; i++)
         delete [] A[i];
     delete [] A;
 }
-
-bool diagonal_elements_positive(int ** A, int& n)
+void Print(int ** A, int n)
 {
-    for (int k = 0; k < n; k++)
-        if (A[k][k] <= 0) return false;
-    return true;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << A[i][j] << "\t";
+        }
+        cout << endl;
+    }
 }
-
-bool diag_elem_contains_3_or_5(int ** A, int& n)
+bool Diag_elem_contains_3_or_5(int ** A, int n)
 {
     for (int k = 0; k < n; k++)
     {
@@ -46,42 +46,33 @@ bool diag_elem_contains_3_or_5(int ** A, int& n)
     }
     return false;
 }
-
-int min_in_column(int ** A, int n, int& k)
+bool Check_Diagonal(int ** A, int n)
 {
-    int minimum = 100000000;
     for(int i = 0; i < n; i++)
-        if(A[i][k] < minimum) minimum = A[i][k];
-
-    return minimum;
+    {
+        if(A[i][i] <= 0 || !Diag_elem_contains_3_or_5(A, n)) return false;
+    }
+    return true;
 }
-
-void replace_min_in_columns(int ** A, int& n, int& x)
+void Replace_min_elem_sum_squares(int ** A,int n)
 {
     for(int j = 0; j < n; j++)
+    {
+        int min_i = -1;
+        int min_element = 1000000;
+        int sum_of_squares = 0;
+        for(int i = 0; i < n; i++)
         {
-            int minimum = min_in_column(A, n, j);
-            for(int i = 0; i < n; i++)
+            sum_of_squares += (A[i][j] * A[i][j]);
+            if(A[i][j] < min_element)
             {
-                if(A[i][j] == minimum) A[i][j] = x;
+                min_element = A[i][j];
+                min_i = i;
+            }
+            if(min_i != -1)
+            {
+                A[min_i][j] = sum_of_squares;
             }
         }
+    }
 }
-
-int sum_squares_in_column(int ** A, int& n, int& k)
-{
-    int summa = 0;
-    for(int i = 0; i < n; i++) summa += (A[i][k] * A[i][k]);
-    return summa;
-}
-
-void print_array(int ** A, int& n)
-{
-    for (int i = 0; i < n; i++)
-        {
-            for(int j = 0; j < n; j++)
-                cout << A[i][j] << "\t";
-        
-            cout << endl;
-        }
-} 
